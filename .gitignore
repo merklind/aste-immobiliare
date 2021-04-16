@@ -33,8 +33,7 @@ Temporary Items
 
 # User-specific stuff
 .idea
-test.csv
-code_annunci.json
+/resource/
 
 # CMake
 cmake-build-*/
