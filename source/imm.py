@@ -14,17 +14,18 @@ CSV_FILE = 'test.csv'
 
 
 if __name__ == '__main__':
-    old_annunci_file = open_resource(CODE_ANNUNCI_JSON, 'r')
     try:
+        old_annunci_file = open_resource(CODE_ANNUNCI_JSON, 'r')
         old_annunci_dict = json.load(old_annunci_file)
-    except json.JSONDecodeError:
+    except (json.JSONDecodeError, FileNotFoundError):
         old_annunci_dict = {}
     new_annunci_dict = dict()
 
     max_page = get_max_page(f'{base_url}{1}')
     print(f'Max page: {max_page}')
 
-    for page in range(1, max_page+1):
+    #for page in range(1, max_page+1):
+    for page in range(1, 2):
         print(f'Page: {page}')
         sleep(randint(2, 6))
         req = get(f'{base_url}{page}', headers=headers)

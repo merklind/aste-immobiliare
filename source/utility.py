@@ -2,6 +2,8 @@ from requests import get
 from bs4 import BeautifulSoup as bs
 from pathlib import Path
 
+RSC_FOLDER = 'resource'
+
 headers = {
     'authority': 'aste.immobiliare.it',
     'cache-control': 'max-age=0',
@@ -33,9 +35,8 @@ def get_max_page(url: str) -> int:
 
 def open_resource(file_name:str, mode: str):
 
-  rsc_fld = 'resource'
-  root = Path(__file__).cwd().parent
-
+  rsc_fld = RSC_FOLDER
+  root = Path(__file__).parent.parent
   file = root.joinpath(rsc_fld, file_name)
 
   return open(file, mode=mode, newline="")
