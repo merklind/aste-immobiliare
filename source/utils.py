@@ -1,5 +1,6 @@
 from requests import get
 from bs4 import BeautifulSoup as bs
+from pathlib import Path
 
 headers = {
     'authority': 'aste.immobiliare.it',
@@ -36,3 +37,10 @@ def copy_dictionary(tmp_dict: dict, final_dict: dict):
         final_dict[key] = tmp_dict[key]
 
 
+def open_resource(file_name:str, mode: str):
+
+  rsc_fld = 'resource'
+  cwd = Path().cwd()
+
+  file = Path(cwd, rsc_fld, file_name)
+  return open(file, mode=mode, newline="")
