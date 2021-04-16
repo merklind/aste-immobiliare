@@ -1,6 +1,5 @@
-from source import CODE_ANNUNCI_JSON, CSV_FILE
 from bs4 import BeautifulSoup as Bs
-from utils import get_max_page, open_resource, headers
+from utility import get_max_page, open_resource, headers
 from scrape_page import get_detailed_annuncio, get_list_annunci
 from random import randint
 from requests import get
@@ -10,6 +9,8 @@ import json
 
 
 base_url = 'https://aste.immobiliare.it/ricerca-generale/provincia-MI/comune-8042/categoria-1/tipologia-4?pag='
+CODE_ANNUNCI_JSON = 'code_annunci.json'
+CSV_FILE = 'test.csv'
 
 
 if __name__ == '__main__':

@@ -34,7 +34,8 @@ def get_max_page(url: str) -> int:
 def open_resource(file_name:str, mode: str):
 
   rsc_fld = 'resource'
-  cwd = Path().cwd()
+  root = Path(__file__).cwd().parent
 
-  file = Path(cwd, rsc_fld, file_name)
+  file = root.joinpath(rsc_fld, file_name)
+
   return open(file, mode=mode, newline="")

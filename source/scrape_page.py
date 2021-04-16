@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup as Bs
 from requests import get
-from utils import headers
+from utility import headers
 from time import sleep
 from random import randint
 
