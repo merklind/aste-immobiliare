@@ -31,12 +31,6 @@ def get_max_page(url: str) -> int:
   return int(max_page)
 
 
-def copy_dictionary(tmp_dict: dict, final_dict: dict):
-
-    for key in tmp_dict.keys():
-        final_dict[key] = tmp_dict[key]
-
-
 def open_resource(file_name:str, mode: str):
 
   rsc_fld = 'resource'
