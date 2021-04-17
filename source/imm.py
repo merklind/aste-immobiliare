@@ -30,8 +30,7 @@ if __name__ == '__main__':
     max_page = get_max_page(f'{base_url}{1}')
     print(f'Max page: {max_page}')
 
-    #for page in range(1, max_page+1):
-    for page in range(1, 2):
+    for page in range(1, max_page+1):
         print(f'Page: {page}')
         sleep(randint(2, 6))
         req = get(f'{base_url}{page}', headers=headers)
