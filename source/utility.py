@@ -40,3 +40,11 @@ def open_resource(file_name:str, mode: str):
   file = root.joinpath(rsc_fld, file_name)
 
   return open(file, mode=mode, newline="")
+
+
+def create_csv_file(file_name: str, mode: str):
+
+    dwnl = Path(__file__).home().joinpath('Downloads')
+    file = dwnl.joinpath(file_name)
+
+    return open(file, mode=mode, newline='')

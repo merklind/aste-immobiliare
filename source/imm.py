@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup as Bs
-from utility import get_max_page, open_resource, headers
+from utility import get_max_page, open_resource, create_csv_file, headers
 from scrape_page import get_detailed_annuncio, get_list_annunci
 from random import randint
 from requests import get
@@ -10,7 +10,7 @@ import json
 
 base_url = 'https://aste.immobiliare.it/ricerca-generale/provincia-MI/comune-8042/categoria-1/tipologia-4?pag='
 CODE_ANNUNCI_JSON = 'code_annunci.json'
-CSV_FILE = 'test.csv'
+CSV_FILE = 'nuovi annunci.csv'
 
 
 if __name__ == '__main__':
@@ -24,8 +24,7 @@ if __name__ == '__main__':
     max_page = get_max_page(f'{base_url}{1}')
     print(f'Max page: {max_page}')
 
-    #for page in range(1, max_page+1):
-    for page in range(1, 2):
+    for page in range(1, max_page+1):
         print(f'Page: {page}')
         sleep(randint(2, 6))
         req = get(f'{base_url}{page}', headers=headers)
@@ -46,7 +45,7 @@ if __name__ == '__main__':
             if key not in fieldnames:
                 fieldnames.append(key)
 
-    with open_resource(CSV_FILE, 'w') as csv_file:
+    with create_csv_file(CSV_FILE, 'w') as csv_file:
         writer = DictWriter(csv_file, fieldnames=fieldnames, extrasaction="ignore", quoting=QUOTE_ALL, delimiter=";")
         writer.writeheader()
         for code_imm in new_annunci_dict.keys():
