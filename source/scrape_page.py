@@ -3,6 +3,7 @@ from requests import get
 from utility import headers
 from time import sleep
 from random import randint
+from datetime import date
 
 
 def get_list_annunci(soup: Bs, old_annunci: dict, new_annunci: dict) -> None:
@@ -25,9 +26,11 @@ def get_first_detail_annuncio(annuncio) -> tuple:
 
 def get_detailed_annuncio(annunci: dict) -> None:
     index = 1
+    today = date.today()
     for code in annunci.keys():
         print(f'{index} of {len(annunci)}')
         link = annunci[code]['link']
+        annunci[code]['Scaricato il'] = today.strftime('%d/%m/%Y')
         req = get(link, headers=headers)
         soup = Bs(req.text, 'html.parser')
 
@@ -88,9 +91,12 @@ def get_detail_vendita(soup, annunci, code):
 
     for pair in zip(descriptions, values):
         description = pair[0].text.strip()
-        value = pair[1].text.strip()
+        value = str(pair[1].text.strip())
         if description != '':
-            annunci[code][description] = value
+            if description == 'Data e Ora':
+                annunci[code]['Data asta'] = value[:value.find('ore')-1]
+            else:
+                annunci[code][description] = value
 
 
 def get_detail_asta(soup, code, annunci):

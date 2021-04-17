@@ -11,6 +11,12 @@ import json
 base_url = 'https://aste.immobiliare.it/ricerca-generale/provincia-MI/comune-8042/categoria-1/tipologia-4?pag='
 CODE_ANNUNCI_JSON = 'code_annunci.json'
 CSV_FILE = 'nuovi annunci.csv'
+FIELDNAMES = [
+    'Scaricato il', 'Data asta', 'indirizzo', 'Base', 'descrizione', 'link', 'Riferimento Immobile',
+    'Tipologia', 'Categoria', 'Procedura', 'Numero Procedura', 'Tribunale', 'Data annuncio', 'Aggiornato il',
+    'Tipo vendita', 'Rialzo minimo', 'Stato', 'Deposito cauzionale', 'Giudice', 'Delegato', 'Custode',
+    'Telefono custode', 'Luogo vendita', 'Note', 'Esito', 'Curatore', 'Superficie', 'Locali', 'Offerta minima'
+    ]
 
 
 if __name__ == '__main__':
@@ -24,7 +30,8 @@ if __name__ == '__main__':
     max_page = get_max_page(f'{base_url}{1}')
     print(f'Max page: {max_page}')
 
-    for page in range(1, max_page+1):
+    #for page in range(1, max_page+1):
+    for page in range(1, 2):
         print(f'Page: {page}')
         sleep(randint(2, 6))
         req = get(f'{base_url}{page}', headers=headers)
@@ -39,14 +46,8 @@ if __name__ == '__main__':
     print(f'Nuovi annunci: {len(new_annunci_dict)}')
     get_detailed_annuncio(new_annunci_dict)
 
-    fieldnames = []
-    for code_imm in new_annunci_dict.keys():
-        for key in new_annunci_dict[code_imm].keys():
-            if key not in fieldnames:
-                fieldnames.append(key)
-
     with create_csv_file(CSV_FILE, 'w') as csv_file:
-        writer = DictWriter(csv_file, fieldnames=fieldnames, extrasaction="ignore", quoting=QUOTE_ALL, delimiter=";")
+        writer = DictWriter(csv_file, fieldnames=FIELDNAMES, extrasaction="ignore", quoting=QUOTE_ALL, delimiter=";")
         writer.writeheader()
         for code_imm in new_annunci_dict.keys():
             writer.writerow(new_annunci_dict[code_imm])
