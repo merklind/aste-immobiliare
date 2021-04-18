@@ -94,7 +94,8 @@ def get_detail_vendita(soup, annunci, code):
         value = str(pair[1].text.strip())
         if description != '':
             if description == 'Data e Ora':
-                annunci[code]['Data asta'] = value[:value.find('ore')-1]
+                index_ore = value.find('ore')
+                annunci[code]['Data e ora asta'] = f'{value[:index_ore-1]} {value[index_ore+3:]}'
             else:
                 annunci[code][description] = value
 

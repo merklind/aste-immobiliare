@@ -12,7 +12,7 @@ base_url = 'https://aste.immobiliare.it/ricerca-generale/provincia-MI/comune-804
 CODE_ANNUNCI_JSON = 'code_annunci.json'
 CSV_FILE = 'nuovi annunci.csv'
 FIELDNAMES = [
-    'Scaricato il', 'Data asta', 'indirizzo', 'Base', 'descrizione', 'link', 'Riferimento Immobile',
+    'Scaricato il', 'Data e ora asta', 'indirizzo', 'Base', 'descrizione', 'link', 'Riferimento Immobile',
     'Tipologia', 'Categoria', 'Procedura', 'Numero Procedura', 'Tribunale', 'Data annuncio', 'Aggiornato il',
     'Tipo vendita', 'Rialzo minimo', 'Stato', 'Deposito cauzionale', 'Giudice', 'Delegato', 'Custode',
     'Telefono custode', 'Luogo vendita', 'Note', 'Esito', 'Curatore', 'Superficie', 'Locali', 'Offerta minima'
