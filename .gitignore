@@ -34,6 +34,7 @@ Temporary Items
 # User-specific stuff
 .idea
 /resource/
+*.exe
 
 # CMake
 cmake-build-*/
