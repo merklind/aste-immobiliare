@@ -1,9 +1,9 @@
-from io import FileIO
 from requests import get
 from bs4 import BeautifulSoup as bs
 from pathlib import Path
 from os import mkdir
-from sys import exit
+from os.path import split
+from sys import exit, exc_info
 
 RSC_FOLDER = 'resource'
 
@@ -32,11 +32,8 @@ def get_max_page(url: str) -> int:
   try:
     req = get(url, headers=headers)
     soup = bs(req.text, 'html.parser')
-  except Exception as exc:
-    log = open_log_file()
-    log.write(str(type(exc)))
-    log.close()
-    exit()
+  except (ConnectionError, Exception):
+    handle_exception()
 
   max_page = soup.find('div', {'class': 'pagination listing-pager'}).find_all('span')[-1].text[-3:]
   return int(max_page)
@@ -48,7 +45,7 @@ def open_resource(file_name:str, mode: str):
   root = Path(__file__).parent
   file = root.joinpath(rsc_fld, file_name)
 
-  if (not root.joinpath(rsc_fld).exists()):
+  if not root.joinpath(rsc_fld).exists():
     mkdir(path=root.joinpath(rsc_fld))
 
   return open(file, mode=mode, newline="")
@@ -62,10 +59,31 @@ def create_csv_file(file_name: str, mode: str):
     return open(file, mode=mode, newline='')
 
 
-def open_log_file() -> FileIO:
+def open_log_file():
 
-    log_name = 'log.txt'
-    dwnl = Path(__file__).home().joinpath('Downloads')
-    log_file_path = dwnl.joinpath(log_name)
+  log_name = 'log.txt'
+  dwnl = Path(__file__).home().joinpath('Downloads')
+  log_file_path = dwnl.joinpath(log_name)
+  try:
+    log_file = open(log_file_path, 'w')
+  except Exception:
+    handle_exception()
 
-    return open(log_file_path, 'w')
+  return log_file
+
+
+def write_to_log(log_file):
+  exc_type, exc_obj, exc_tb = exc_info()
+  fname = split(exc_tb.tb_frame.f_code.co_filename)[1]
+  log_file.write(f'Exception type: {exc_type}\n')
+  log_file.write(f'File: {fname}\n')
+  log_file.write(f'No. line: {exc_tb.tb_lineno}\n')
+
+
+def handle_exception():
+  log = open_log_file()
+  write_to_log(log)
+  log.close()
+  print('Si è verificato un errore. Premi ENTER per terminare...')
+  input()
+  exit()
