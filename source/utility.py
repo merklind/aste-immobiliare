@@ -2,6 +2,7 @@ from requests import get
 from bs4 import BeautifulSoup as bs
 from pathlib import Path
 from os import mkdir
+from sys import exit
 
 RSC_FOLDER = 'resource'
 
@@ -27,8 +28,12 @@ def get_max_page(url: str) -> int:
   @param url: l'url a cui eseguire la richiesta
   '''
 
-  req = get(url, headers=headers)
-  soup = bs(req.text, 'html.parser')
+  try:
+    req = get(url, headers=headers)
+    soup = bs(req.text, 'html.parser')
+  except:
+    print('Errore')
+    exit()
 
   max_page = soup.find('div', {'class': 'pagination listing-pager'}).find_all('span')[-1].text[-3:]
   return int(max_page)
