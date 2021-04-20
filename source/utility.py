@@ -1,6 +1,7 @@
 from requests import get
 from bs4 import BeautifulSoup as bs
 from pathlib import Path
+from os import mkdir
 
 RSC_FOLDER = 'resource'
 
@@ -39,6 +40,9 @@ def open_resource(file_name:str, mode: str):
   root = Path(__file__).parent
   file = root.joinpath(rsc_fld, file_name)
 
+  if (not root.joinpath(rsc_fld).exists()):
+    mkdir(path=root.joinpath(rsc_fld))
+
   return open(file, mode=mode, newline="")
 
 
@@ -48,3 +52,7 @@ def create_csv_file(file_name: str, mode: str):
     file = dwnl.joinpath(file_name)
 
     return open(file, mode=mode, newline='')
+
+def create_folder_exists():
+
+  rsc_folder = Path(__file__).joinpath('resource')
