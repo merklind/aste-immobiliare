@@ -1,3 +1,4 @@
+from io import FileIO
 from requests import get
 from bs4 import BeautifulSoup as bs
 from pathlib import Path
@@ -31,8 +32,10 @@ def get_max_page(url: str) -> int:
   try:
     req = get(url, headers=headers)
     soup = bs(req.text, 'html.parser')
-  except:
-    print('Errore')
+  except Exception as exc:
+    log = open_log_file()
+    log.write(str(type(exc)))
+    log.close()
     exit()
 
   max_page = soup.find('div', {'class': 'pagination listing-pager'}).find_all('span')[-1].text[-3:]
@@ -57,3 +60,12 @@ def create_csv_file(file_name: str, mode: str):
     file = dwnl.joinpath(file_name)
 
     return open(file, mode=mode, newline='')
+
+
+def open_log_file() -> FileIO:
+
+    log_name = 'log.txt'
+    dwnl = Path(__file__).home().joinpath('Downloads')
+    log_file_path = dwnl.joinpath(log_name)
+
+    return open(log_file_path, 'w')
