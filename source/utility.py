@@ -52,7 +52,3 @@ def create_csv_file(file_name: str, mode: str):
     file = dwnl.joinpath(file_name)
 
     return open(file, mode=mode, newline='')
-
-def create_folder_exists():
-
-  rsc_folder = Path(__file__).joinpath('resource')
