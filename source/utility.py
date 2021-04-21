@@ -1,3 +1,4 @@
+import sys
 from requests import get
 from bs4 import BeautifulSoup as bs
 from pathlib import Path
@@ -42,7 +43,10 @@ def get_max_page(url: str) -> int:
 def open_resource(file_name:str, mode: str):
 
   rsc_fld = RSC_FOLDER
-  root = Path(__file__).parent
+  if are_we_bundle():
+    root = Path(__file__).parent
+  else:
+    root = Path(__file__).parent.parent
   file = root.joinpath(rsc_fld, file_name)
 
   if not root.joinpath(rsc_fld).exists():
@@ -87,3 +91,10 @@ def handle_exception():
   print('Si è verificato un errore. Premi ENTER per terminare...')
   input()
   exit()
+
+
+def are_we_bundle():
+  if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    return True
+  else:
+    return False
