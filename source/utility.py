@@ -88,7 +88,8 @@ def handle_exception():
   log = open_log_file()
   write_to_log(log)
   log.close()
-  print('Si è verificato un errore. Premi ENTER per terminare...')
+  print('Si è verificato un errore. Ho creato un file chiamato \'log\' nella cartella Download. Inviamelo')
+  print('Premi ENTER per terminare...')
   input()
   exit()
 
