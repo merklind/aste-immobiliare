@@ -5,6 +5,7 @@ from pathlib import Path
 from os import mkdir
 from os.path import split
 from sys import exit, exc_info
+from traceback import print_exc
 
 RSC_FOLDER = 'resource'
 
@@ -76,17 +77,9 @@ def open_log_file():
   return log_file
 
 
-def write_to_log(log_file):
-  exc_type, exc_obj, exc_tb = exc_info()
-  fname = split(exc_tb.tb_frame.f_code.co_filename)[1]
-  log_file.write(f'Exception type: {exc_type}\n')
-  log_file.write(f'File: {fname}\n')
-  log_file.write(f'No. line: {exc_tb.tb_lineno}\n')
-
-
 def handle_exception():
   log = open_log_file()
-  write_to_log(log)
+  print_exc(file=log)
   log.close()
   print('Si è verificato un errore. Ho creato un file chiamato \'log\' nella cartella Download. Inviamelo')
   print('Premi ENTER per terminare...')
