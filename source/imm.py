@@ -28,7 +28,6 @@ if __name__ == '__main__':
     new_annunci_dict = dict()
 
     max_page = get_max_page(f'{base_url}{1}')
-    OSError
     print(f'Max page: {max_page}')
 
     for page in range(1, max_page+1):
