@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup as Bs
-from utility import get_max_page, open_resource, create_csv_file, are_we_bundle, headers
+from utility import get_max_page, open_resource, create_csv_file, headers
 from scrape_page import get_detailed_annuncio, get_list_annunci
 from random import randint
 from requests import get
