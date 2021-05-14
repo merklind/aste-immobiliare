@@ -3,8 +3,7 @@ from requests import get
 from bs4 import BeautifulSoup as bs
 from pathlib import Path
 from os import mkdir
-from os.path import split
-from sys import exit, exc_info
+from sys import exit
 from traceback import print_exc
 
 RSC_FOLDER = 'resource'
@@ -58,10 +57,16 @@ def open_resource(file_name:str, mode: str):
 
 def create_csv_file(file_name: str, mode: str):
 
-    dwnl = Path(__file__).home().joinpath('Downloads')
-    file = dwnl.joinpath(file_name)
+  if are_we_bundle():
+    curr = Path(__file__)
+    while curr.parts[-1] != 'aste-immobiliare':
+      curr = curr.parent
+  else:
+    curr = Path(__file__).parent.parent
+  
+  file = curr.joinpath(file_name)
 
-    return open(file, mode=mode, newline='')
+  return open(file, mode=mode, newline='')
 
 
 def open_log_file():
