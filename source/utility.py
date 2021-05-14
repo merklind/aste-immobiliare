@@ -5,8 +5,7 @@ from pathlib import Path
 from os import mkdir
 from sys import exit
 from traceback import print_exc
-
-RSC_FOLDER = 'resource'
+from json import load
 
 headers = {
     'authority': 'aste.immobiliare.it',
@@ -40,9 +39,10 @@ def get_max_page(url: str) -> int:
   return int(max_page)
 
 
-def open_resource(file_name:str, mode: str):
+def open_resource(config, mode: str):
 
-  rsc_fld = RSC_FOLDER
+  file_name = config["code_annunci"]
+  rsc_fld = config["resource_folder"]
   if are_we_bundle():
     root = Path(__file__).parent
   else:
@@ -55,11 +55,12 @@ def open_resource(file_name:str, mode: str):
   return open(file, mode=mode, newline="")
 
 
-def create_csv_file(file_name: str, mode: str):
+def create_csv_file(config, mode: str):
 
+  file_name = config["csv_file"]
   if are_we_bundle():
     curr = Path(__file__)
-    while curr.parts[-1] != 'aste-immobiliare':
+    while curr.parts[-1] != config["base_folder"]:
       curr = curr.parent
   else:
     curr = Path(__file__).parent.parent
@@ -69,9 +70,9 @@ def create_csv_file(file_name: str, mode: str):
   return open(file, mode=mode, newline='')
 
 
-def open_log_file():
+def open_log_file(config):
 
-  log_name = 'log.txt'
+  log_name = config["log_file"]
   dwnl = Path(__file__).home().joinpath('Downloads')
   log_file_path = dwnl.joinpath(log_name)
   try:
@@ -83,7 +84,8 @@ def open_log_file():
 
 
 def handle_exception():
-  log = open_log_file()
+  config = read_config()
+  log = open_log_file(config)
   print_exc(file=log)
   log.close()
   print('Si è verificato un errore. Ho creato un file chiamato \'log\' nella cartella Download. Inviamelo')
@@ -97,3 +99,17 @@ def are_we_bundle():
     return True
   else:
     return False
+
+
+def read_config():
+
+  if are_we_bundle():
+    config_file_path = Path(__file__).parent.joinpath("resource", 'config.json')
+  else:
+    config_file_path = Path(__file__).parent.parent.joinpath("resource", "config.json")
+  
+  config_file = open(config_file_path, 'r')
+  config_file_json = load(config_file)
+
+  return config_file_json
+
