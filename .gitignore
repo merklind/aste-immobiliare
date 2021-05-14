@@ -33,7 +33,9 @@ Temporary Items
 
 # User-specific stuff
 .idea
+.vscode
 /resource/code_annunci.json
+/exe
 *.exe
 
 # CMake
