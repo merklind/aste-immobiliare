@@ -1,0 +1,12 @@
+{
+  "base_folder": "aste-immobiliare",
+  "resource_folder" : "resource",
+  "base_url": "https://aste.immobiliare.it/ricerca-generale/provincia-MI/comune-8042/categoria-1/tipologia-4?pag=",
+  "code_annunci": "code_annunci.json",
+  "csv_file": "nuovi_annunci.csv",
+  "log_file" : "log.txt",
+  "field_names": ["Scaricato il", "Data e ora asta", "indirizzo", "Base", "descrizione", "link", "Riferimento Immobile",
+    "Tipologia", "Categoria", "Procedura", "Numero Procedura", "Tribunale", "Data annuncio", "Aggiornato il",
+    "Tipo vendita", "Rialzo minimo", "Stato", "Deposito cauzionale", "Giudice", "Delegato", "Custode",
+    "Telefono custode", "Luogo vendita", "Note", "Esito", "Curatore", "Superficie", "Locali", "Offerta minima"]
+}
