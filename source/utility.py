@@ -44,7 +44,8 @@ def open_resource(config, mode: str):
   file_name = config["code_annunci"]
   rsc_fld = config["resource_folder"]
   if are_we_bundle():
-    root = Path(__file__).parent
+    #root = Path(__file__).parent
+    root = Path(sys.executable).parent
   else:
     root = Path(__file__).parent.parent
   file = root.joinpath(rsc_fld, file_name)
@@ -59,7 +60,8 @@ def create_csv_file(config, mode: str):
 
   file_name = config["csv_file"]
   if are_we_bundle():
-    curr = Path(__file__)
+    #curr = Path(__file__)
+    curr = Path(sys.executable)
     while curr.parts[-1] != config["base_folder"]:
       curr = curr.parent
   else:
@@ -73,7 +75,7 @@ def create_csv_file(config, mode: str):
 def open_log_file(config):
 
   log_name = config["log_file"]
-  dwnl = Path(__file__).home().joinpath('Downloads')
+  dwnl = Path(sys.executable).home().joinpath('Downloads')
   log_file_path = dwnl.joinpath(log_name)
   try:
     log_file = open(log_file_path, 'w')
@@ -104,7 +106,8 @@ def are_we_bundle():
 def read_config():
 
   if are_we_bundle():
-    config_file_path = Path(__file__).parent.joinpath("resource", 'config.json')
+    #config_file_path = Path(__file__).parent.joinpath("resource", 'config.json')
+    config_file_path = Path(sys.executable).parent.joinpath("resource", 'config.json')
   else:
     config_file_path = Path(__file__).parent.parent.joinpath("resource", "config.json")
   
