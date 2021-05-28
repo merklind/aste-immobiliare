@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup as Bs
+import bs4
 from requests import get
 from utility import headers
 from time import sleep
@@ -8,20 +9,48 @@ from datetime import date
 
 def get_list_annunci(soup: Bs, old_annunci: dict, new_annunci: dict) -> None:
 
-    main_content = soup.find('div', {'id': 'maincontent'})
+	"""
+		Esegue lo scrape di 'soup' e aggiunge nel dizionario new_annunci
+		tutti gli annunci che non sono presenti nel dizionario old_annunci
 
-    for annuncio in main_content.find_all('li'):
-        code, link = get_first_detail_annuncio(annuncio)
-        if code not in old_annunci.keys():
-            new_annunci[code] = {"link": link}
+		Parametri:
+		---------
+		soup: Bs
+			Pagina su cui fare lo scrape
+		
+		old_annunci: dict
+			dizionario contenente tutte i codici degli annunci già visitati precedentemente
+
+		new_annunci: dict
+			dizionario in cui inserire i codici dei nuovi annunci
+	"""
+
+	main_content = soup.find('div', {'id': 'maincontent'})
+
+	for annuncio in main_content.find_all('li'):
+		code, link = get_first_detail_annuncio(annuncio)
+		if code not in old_annunci.keys():
+				new_annunci[code] = {"link": link}
 
 
-def get_first_detail_annuncio(annuncio) -> tuple:
+def get_first_detail_annuncio(annuncio: bs4.element.Tag) -> tuple:
 
-    code_annuncio = annuncio.find('dd').text
-    link_annuncio = annuncio.find_all('a')[-1]['href']
+	"""
+		Ottiene il codice dell'annuncio e il link 
+		della pagina di dettaglio dell'annuncio
 
-    return code_annuncio, link_annuncio
+		Returns:
+		--------
+		code_annuncio: str
+			stringa che rappresenta il codice dell'annuncio
+		link_annuncio: str
+			link alla pagina di dettaglio dell'annuncio
+	"""
+
+	code_annuncio = annuncio.find('dd').text
+	link_annuncio = annuncio.find_all('a')[-1]['href']
+
+	return code_annuncio, link_annuncio
 
 
 def get_detailed_annuncio(annunci: dict) -> None:
@@ -67,7 +96,7 @@ def get_detail_procedure(soup, annunci, code):
 def get_detail_immobile(soup, annunci, code):
 
     section = soup.find_all('section', {'class':'section-detail'})[2].find('dl', {'class':'dl-table clearfix'})
-    
+
     descriptions = section.find_all('dt')
     values = section.find_all('dd')
 
@@ -76,9 +105,9 @@ def get_detail_immobile(soup, annunci, code):
         value = pair[1].text.strip()
         if description != '':
             annunci[code][description] = value
-    
+
     descrizione_imm = soup.find_all('section', {'class':'section-detail'})[2].find('p').text.replace("\n", "").strip()
-    
+
     annunci[code]['descrizione'] = descrizione_imm
 
 
@@ -101,7 +130,7 @@ def get_detail_vendita(soup, annunci, code):
 
 
 def get_detail_asta(soup, code, annunci):
-    
+
     section = soup.find_all('section', {'class':'section-detail'})[4]
 
     descriptions = section.find_all('dt')

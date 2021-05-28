@@ -149,7 +149,7 @@ def open_log_file(config: dict) -> TextIOWrapper:
   return log_file
 
 
-def handle_exception():
+def handle_exception() -> None:
   
   """
   In caso di errori a runtime nel programma scrive il traceback
@@ -186,7 +186,7 @@ def are_we_bundle() -> bool:
     return False
 
 
-def read_config():
+def read_config() -> dict:
 
   """
   Apre il file di configurazione, lo salva in un dizionario e ritorna.
