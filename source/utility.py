@@ -84,7 +84,6 @@ def open_resource(config: dict, mode: str) -> TextIOWrapper:
     mkdir(path=root.joinpath(rsc_fld))
 
   rsc_file = open(file, mode=mode, newline="")
-  print(type(rsc_file))
 
   return rsc_file
 
