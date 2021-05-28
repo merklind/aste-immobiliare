@@ -1,3 +1,4 @@
+from io import TextIOWrapper
 import sys
 from requests import get
 from bs4 import BeautifulSoup as bs
@@ -24,10 +25,20 @@ headers = {
 
 
 def get_max_page(url: str) -> int:
-  '''
-  Ottiene e ritorna il massimo numero di pagine totali degli annunci
-  @param url: l'url a cui eseguire la richiesta
-  '''
+  """
+  Recupera il numero totali di pagine
+
+  Parametri:
+  ---------
+  url: str
+    l'url a cui eseguire la richiesta
+    
+
+  Returns
+  -------
+  max_page: int
+    Il numero totale di pagine
+  """
 
   try:
     req = get(url, headers=headers)
@@ -39,7 +50,26 @@ def get_max_page(url: str) -> int:
   return int(max_page)
 
 
-def open_resource(config, mode: str):
+def open_resource(config: dict, mode: str) -> TextIOWrapper:
+
+  """
+  Apre e ritorna il file di configurazione config.json contenente tutte le impostazioni necessarie
+  per il corretto funzionamento del programma
+
+  Parametri:
+  ---------
+    config: dict
+      dizionario json contenente tutte le configurazioni
+
+    mode: str
+      modalità in cui aprire il file
+  
+  Returns:
+  --------
+  rsc_file: TextIOWrapper
+    file contenente tutte le configurazioni necessarie
+
+  """
 
   file_name = config["code_annunci"]
   rsc_fld = config["resource_folder"]
@@ -53,10 +83,30 @@ def open_resource(config, mode: str):
   if not root.joinpath(rsc_fld).exists():
     mkdir(path=root.joinpath(rsc_fld))
 
-  return open(file, mode=mode, newline="")
+  rsc_file = open(file, mode=mode, newline="")
+  print(type(rsc_file))
+
+  return rsc_file
 
 
-def create_csv_file(config, mode: str):
+def create_csv_file(config: dict, mode: str) -> TextIOWrapper:
+  """
+  Crea e ritorna il file csv in cui scrivere
+
+  Parametri:
+  ---------
+    config: dict
+      dizionario json contenente tutte le configurazioni
+
+    mode: str
+      modalità in cui aprire il file
+  
+  Returns:
+  --------
+  csv_file: TextIOWrapper
+    file csv su cui scrivere
+
+  """
 
   file_name = config["csv_file"]
   if are_we_bundle():
@@ -68,12 +118,26 @@ def create_csv_file(config, mode: str):
     curr = Path(__file__).parent.parent
   
   file = curr.joinpath(file_name)
+  csv_file = open(file, mode=mode, newline='')
+  
+  return csv_file
 
-  return open(file, mode=mode, newline='')
 
+def open_log_file(config: dict) -> TextIOWrapper:
+  """
+  Crea e ritorna un file con permessi di scrittura in caso di errori
+  per scrivere il log error
 
-def open_log_file(config):
+  Parametri:
+  ---------
+  config: dict
+    dizionario json contenente tutte le configurazioni
 
+  Returns:
+  --------
+  log_file: textIoWrapper
+    file su cui scrivere il log error
+  """
   log_name = config["log_file"]
   dwnl = Path(sys.executable).home().joinpath('Downloads')
   log_file_path = dwnl.joinpath(log_name)
@@ -86,6 +150,12 @@ def open_log_file(config):
 
 
 def handle_exception():
+  
+  """
+  In caso di errori a runtime nel programma scrive il traceback
+  su file e lo salva nella cartella Download del computer
+  """
+
   config = read_config()
   log = open_log_file(config)
   print_exc(file=log)
@@ -96,7 +166,20 @@ def handle_exception():
   exit()
 
 
-def are_we_bundle():
+def are_we_bundle() -> bool:
+
+  """
+  Verifica se il programma è in modalità bundle(eseguibile di PyInstaller)
+  o in modalità script
+
+  Returns:
+  True: bool
+    se il programma è eseguito in modalità bundle
+  
+  False: bool
+    se il porgramma è eseguito in modalità script
+  """
+
   if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
     return True
   else:
@@ -104,6 +187,15 @@ def are_we_bundle():
 
 
 def read_config():
+
+  """
+  Apre il file di configurazione, lo salva in un dizionario e ritorna.
+
+  Returns:
+  --------
+  config_file_json: dict
+    dizionario contente il file di configurazione
+  """
 
   if are_we_bundle():
     #config_file_path = Path(__file__).parent.joinpath("resource", 'config.json')
