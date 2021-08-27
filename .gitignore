@@ -35,8 +35,9 @@ Temporary Items
 .idea
 .vscode
 /resource/code_annunci.json
-/exe
+/exe*
 *.exe
+*.csv
 
 # CMake
 cmake-build-*/
