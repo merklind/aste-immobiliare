@@ -57,19 +57,22 @@ def get_detailed_annuncio(annunci: dict) -> None:
     index = 1
     today = date.today()
     for code in annunci.keys():
-        print(f'{index} of {len(annunci)}')
         link = annunci[code]['link']
+        print(f'{index} of {len(annunci)}: {link}')
         annunci[code]['Scaricato il'] = today.strftime('%d/%m/%Y')
         req = get(link, headers=headers)
         soup = Bs(req.text, 'html.parser')
 
-        get_address(soup, annunci, code)
-        get_detail_procedure(soup, annunci, code)
-        get_detail_immobile(soup, annunci, code)
-        get_detail_vendita(soup, annunci, code)
-        get_detail_asta(soup, code, annunci)
-        index += 1
-        sleep(randint(1, 3))
+        try:
+            get_address(soup, annunci, code)
+            get_detail_procedure(soup, annunci, code)
+            get_detail_immobile(soup, annunci, code)
+            get_detail_vendita(soup, annunci, code)
+            get_detail_asta(soup, code, annunci)
+            index += 1
+            sleep(randint(1, 3))
+        except:
+            print("Errore")
 
 
 def get_address(soup, annunci, code):
